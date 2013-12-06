@@ -56,6 +56,6 @@ def parse(message_data, bot):
 	string += irc.bold(time.strftime("%Y.%m.%d", time.strptime(entry.published.text, "%Y-%m-%dT%H:%M:%S.000Z")))
 	return string
 
-commands = {"yt": search, "youtube": search}
+commands = {"youtube": search, "y": search}
 triggers = [(regex, parse)]
 
