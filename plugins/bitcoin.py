@@ -38,5 +38,5 @@ def btc_convert(message_data, bot):
     return 'If you converted that to bitcoins you could have %f BTC!' %((amount / avg))
 
 commands = {"bit": btc_price, "btc": btc_price}
-triggers = [(regex1, btc_convert), (regex2, btc_convert)]
+
 
