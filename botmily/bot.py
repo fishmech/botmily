@@ -32,7 +32,7 @@ class bot():
 			print("Loading plugin " + modname)
 			plugin = __import__("plugins." + modname, fromlist="hook")
 			self.commands.update(plugin.commands)
-			self.triggers.extend(plugin.triggers)
+			#self.triggers.extend(plugin.triggers)
 
 		asyncore.loop()
 
