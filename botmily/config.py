@@ -21,11 +21,6 @@ def getConfig():
     global server
     global channels
     global password
-    global tumblr_blog
-    global tumblr_user
-    global tumblr_password
-    global tumblr_title
-    global tumblr_tumbling
     global wolframalpha_api_key
     global lastfm_api_key
     global oauth_token
@@ -38,11 +33,6 @@ def getConfig():
     server = config.get('main', 'server')
     channels = config.get('main', 'channels').split(" ")
     password = config.get('main', 'password')
-    tumblr_tumbling = config.getboolean('tumblr','tumbling')
-    tumblr_blog = config.get('tumblr', 'blog')
-    tumblr_user = config.get('tumblr' , 'user')
-    tumblr_password = config.get('tumblr', 'password')
-    tumblr_title = config.get('tumblr','post_titles')
     wolframalpha_api_key = config.get('wolframalpha', 'api_key')
     lastfm_api_key = config.get('lastfm', 'api_key')
     oauth_token = config.get('twitter', 'oauth_token')
