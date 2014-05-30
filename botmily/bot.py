@@ -8,7 +8,7 @@ import re
 import socket
 import sys
 import traceback
-
+import math
 from botmily import config
 from botmily import irc
 import plugins
@@ -88,6 +88,15 @@ class bot():
 				
 
 	def say(self, nick, channel, output):
+		if output is None:
+			return
+		if len(output) > 512:
+			for x in range(0,int(math.ceil(len(output)/512.0))):
+				self.do_msg(nick,channel,output[512*x:512*(x+1)])
+		else:
+			self.do_msg(nick,channel,output)		
+
+	def do_msg(self,nick,channel,output):
 		if output is None:
 			return
 		if self.nickname == channel:
