@@ -19,6 +19,12 @@ def fourchan(message_data, bot):
         board = "/a/"
     if message_data['command'] == "dick":
         board = "/d/"
+    if message_data['command'] == "dudes":
+        board = "/hm/"
+    if message_data['command'] == "j":
+        board = "/s/"
+    if message_data['command'] == "slurm":
+        board = "/lgbt/"
     if message_data['command'] == "technology":
         board = "/g/"
     if message_data['command'] == "videogame":
@@ -41,6 +47,6 @@ def fourchan(message_data, bot):
         url = imgur.postToImgur(str("temp.jpg"))
     return url
 
-commands = {"technology": fourchan, "animals": fourchan, "pokemon": fourchan, "ecchi": fourchan, "videogame": fourchan, "hentai": fourchan, "anime": fourchan, "dick": fourchan}
+commands = {"technology": fourchan, "slurm":  fourchan, "j": fourchan, "dudes": fourchan, "animals": fourchan, "pokemon": fourchan, "ecchi": fourchan, "videogame": fourchan, "hentai": fourchan, "anime": fourchan, "dick": fourchan}
 triggers = []
 

@@ -11,7 +11,7 @@ import random
 def tumblr(message_data, bot):
     t = Twitter(api_version=1.1, auth=OAuth(config.oauth_token,
     config.oauth_secret, config.consumer_key, config.consumer_secret))
-    tweetno = random.randint(0,199)
+    tweetno = random.randint(8000,8099)
     tweet = t.statuses.user_timeline.tumblrtxt(count=200)[tweetno]
     return tweet['text']
 

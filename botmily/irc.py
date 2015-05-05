@@ -52,7 +52,7 @@ class irc_handler(asynchat.async_chat):
 		self.set_terminator(b"\r\n")
 		self.bot = bot
 		self.push(b"NICK %s\r\n" %bot.nickname)
-		self.push(b"USER botmily 0 0 :Botmily\r\n")
+		self.push(b"USER botdrew 0 0 :Botdrew\r\n")
 		if error_callback:
 			self.handle_error = error_callback
 
