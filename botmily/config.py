@@ -27,6 +27,7 @@ def getConfig():
     global oauth_secret
     global consumer_key
     global consumer_secret
+    global YOUTUBE_API_KEY
     config = ConfigParser()
     config.read('config.ini')
     name = config.get('main', 'name')
@@ -39,6 +40,7 @@ def getConfig():
     oauth_secret = config.get('twitter', 'oauth_secret')
     consumer_key = config.get('twitter', 'consumer_key')
     consumer_secret = config.get('twitter', 'consumer_secret')
+    YOUTUBE_API_KEY = config.get('youtube', 'api_key')
     print("I will use the name: " + name)
     print("I will connect to the server: " + server)
     print("I will connect to the channels: " + ", ".join(channels))
