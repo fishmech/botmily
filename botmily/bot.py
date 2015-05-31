@@ -13,6 +13,9 @@ from botmily import config
 from botmily import irc
 import plugins
 
+import select
+import time
+
 class bot():
 	def __init__(self):
 		self.server = config.server
@@ -20,10 +23,6 @@ class bot():
 		self.realname = b"Botdrew https://github.com/kgc/botmily"
 		self.channels = config.channels
 		self.password = config.password
-
-		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.socket.connect((self.server, 6667))
-		self.irc = irc.irc_handler(self.socket, self , self.irc_error)
 
 		print("Initializing plugins...")
 		self.commands = {}
@@ -34,7 +33,51 @@ class bot():
 			self.commands.update(plugin.commands)
 			self.triggers.extend(plugin.triggers)
 
-		asyncore.loop()
+
+		Continue_State = True
+		print("Attempting Connection! Mash Ctrl+C or whatever to exit.")
+		while (Continue_State):
+			Continue_State = self.connect()
+			if Continue_State:
+				try:
+					print("Sleeping for 30 seconds before retrying...")
+					time.sleep(30)
+				except KeyboardInterrupt, err:
+					Continue_State = False
+
+		print("Exiting!")
+
+	def drop(self):
+		self.socket.close()
+		asyncore.close_all()
+
+	def connect(self):
+		# we COULD close our old socket, if we have one, but... it should get closed in garbage collection so who cares?
+		
+		print("Connecting to:",self.server)
+
+		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+		try:
+			self.socket.connect((self.server, 6667))
+		except socket.gaierror, err:
+			print("Could not initiate connection!")
+			return True
+
+		self.irc = irc.irc_handler(self.socket, self , self.irc_error)
+
+		print("Connection loop starting...")
+
+		try:
+			asyncore.loop()
+		except select.error, err:
+			pass
+		except KeyboardInterrupt, err:
+			print(" <- Keyboard Interupt detected, cancelling thread timers where possible...")
+			self.irc.stop()
+			return False
+
+		return True
 
 	def join(self, nick, user, host, channel):
 		if nick == self.nickname:

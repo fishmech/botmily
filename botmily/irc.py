@@ -1,10 +1,12 @@
 from __future__ import division
-from __future__ import print_function
+#from __future__ import print_function
 from __future__ import unicode_literals
 
 import asynchat
 import time
 import unicodedata
+
+from threading import Timer
 
 controls = {'bold':  '\u0002',
             'color': '\u0003',
@@ -55,6 +57,11 @@ class irc_handler(asynchat.async_chat):
 		self.push(b"USER botdrew 0 0 :Botdrew\r\n")
 		if error_callback:
 			self.handle_error = error_callback
+
+		# Set up a ping counter:
+		self.pingcount = 0
+		self.mytimer = Timer(180, self.ping_check, ())
+		self.mytimer.start()
 
 	def collect_incoming_data(self, data):
 		self.ibuffer += data
@@ -111,9 +118,28 @@ class irc_handler(asynchat.async_chat):
 		self.bot.privmsg(nick, user, host, channel, message)
 
 	def raw_PING(self, prefix, params):
+		#print("Ping")
+		self.pingcount += 1
 		self.pong(params[0])
 
 	def raw_JOIN(self, prefix, params):
 		nick, user, host = split_prefix(prefix)
 		channel = params[0]
 		self.bot.join(nick, user, host, channel)
+
+	def ping_check(self):
+		#print "Pings:",self.pingcount
+		if self.pingcount > 0:
+			self.mytimer = Timer(180, self.ping_check, ())
+			self.mytimer.start()
+			self.pingcount = 0
+		else:
+			print "Suspected Disconnection? Closing socket."
+			asynchat.async_chat.handle_close(self)
+			self.bot.drop()
+			return False
+	
+	def stop(self):
+		if self.mytimer:
+			self.mytimer.cancel()
+		return 0
