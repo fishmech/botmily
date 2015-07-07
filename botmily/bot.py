@@ -23,6 +23,7 @@ class bot():
 		self.realname = b"Botdrew https://github.com/kgc/botmily"
 		self.channels = config.channels
 		self.password = config.password
+		self.timeout = config.timeout
 
 		print("Initializing plugins...")
 		self.commands = {}

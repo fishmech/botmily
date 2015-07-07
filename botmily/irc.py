@@ -60,7 +60,7 @@ class irc_handler(asynchat.async_chat):
 
 		# Set up a ping counter:
 		self.pingcount = 0
-		self.mytimer = Timer(180, self.ping_check, ())
+		self.mytimer = Timer(self.bot.timeout, self.ping_check, ())
 		self.mytimer.start()
 
 	def collect_incoming_data(self, data):
@@ -118,7 +118,7 @@ class irc_handler(asynchat.async_chat):
 		self.bot.privmsg(nick, user, host, channel, message)
 
 	def raw_PING(self, prefix, params):
-		#print("Ping")
+		print("Ping")
 		self.pingcount += 1
 		self.pong(params[0])
 
@@ -128,9 +128,9 @@ class irc_handler(asynchat.async_chat):
 		self.bot.join(nick, user, host, channel)
 
 	def ping_check(self):
-		#print "Pings:",self.pingcount
+		print "Pings:",self.pingcount
 		if self.pingcount > 0:
-			self.mytimer = Timer(180, self.ping_check, ())
+			self.mytimer = Timer(self.bot.timeout, self.ping_check, ())
 			self.mytimer.start()
 			self.pingcount = 0
 		else:

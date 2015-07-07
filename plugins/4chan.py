@@ -18,11 +18,11 @@ def fourchan(message_data, bot):
     if message_data['command'] == "anime":
         board = "/a/"
     if message_data['command'] == "dick":
-        board = "/d/"
+        board = "/drgg/"
     if message_data['command'] == "dudes":
-        board = "/hm/"
+        board = "/hmkkk/"
     if message_data['command'] == "j":
-        board = "/s/"
+        board = "/shhh/"
     if message_data['command'] == "slurm":
         board = "/lgbt/"
     if message_data['command'] == "technology":
