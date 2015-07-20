@@ -40,13 +40,13 @@ def weather(message_data, bot):
         string += current_observation.find('relative_humidity').text + ', Wind is blowing '
         string += current_observation.find('wind_string').text.replace('F','f', 1) + '.'
     elif results is not None:
-        string = "Found the following cities/locations, please specify:\n"
+        string = "Found the following cities/locations, please specify: "
         for r in results:
-            string += r.find('name').text + ', ' + r.find('city').text + ', '
+            string += "[ " + r.find('name').text + ', ' + r.find('city').text + ', '
             state = r.find('state')
             if state.text is not None:
                 string += state.text + ', '
-            string += r.find('country_name').text + "(" + r.find('country').text + ")\n"
+            string += r.find('country_name').text + "(" + r.find('country').text + ") ] "
     else:
         string = "City/location not found"
     return string
