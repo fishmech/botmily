@@ -49,7 +49,7 @@ def makeMacro(imgUrl , text ,fileName):
     imgWidth = image.size[0]
     imgHeight = image.size[0]
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype("impact.ttf", 42)
+    font = ImageFont.truetype("impact.ttf", 64)
     bbox = (50, 0, imgWidth, imgHeight)
     drawtext(draw, text, font, "white", bbox)
     image.save(fileName , 'JPEG')

@@ -8,6 +8,8 @@ name = ''
 server = ''
 channels = []
 password = ''
+sa_user = ''
+sa_password = ''
 timeout = 300
 tumblr_blog = ''
 tumblr_user = ''
@@ -18,36 +20,40 @@ wolframalpha_api_key = ''
 lastfm_api_key = ''
 
 def getConfig():
-    global name
-    global server
-    global channels
-    global password
-    global timeout
-    global wolframalpha_api_key
-    global lastfm_api_key
-    global oauth_token
-    global oauth_secret
-    global consumer_key
-    global consumer_secret
-    global YOUTUBE_API_KEY
-    config = ConfigParser()
-    config.read('config.ini')
-    name = config.get('main', 'name')
-    server = config.get('main', 'server')
-    channels = config.get('main', 'channels').split(" ")
-    password = config.get('main', 'password')
-    try:
-        timeout = int(config.get('main', 'timeout'))
-    except:
-        print("Could not convert timeout value to integer! Defaulting to 300!")
-        timeout = 300
-    wolframalpha_api_key = config.get('wolframalpha', 'api_key')
-    lastfm_api_key = config.get('lastfm', 'api_key')
-    oauth_token = config.get('twitter', 'oauth_token')
-    oauth_secret = config.get('twitter', 'oauth_secret')
-    consumer_key = config.get('twitter', 'consumer_key')
-    consumer_secret = config.get('twitter', 'consumer_secret')
-    YOUTUBE_API_KEY = config.get('youtube', 'api_key')
-    print("I will use the name: " + name)
-    print("I will connect to the server: " + server)
-    print("I will connect to the channels: " + ", ".join(channels))
+	global name
+	global server
+	global channels
+	global password
+	global sa_user
+	global sa_password
+	global timeout
+	global wolframalpha_api_key
+	global lastfm_api_key
+	global oauth_token
+	global oauth_secret
+	global consumer_key
+	global consumer_secret
+	global YOUTUBE_API_KEY
+	config = ConfigParser()
+	config.read('config.ini')
+	name = config.get('main', 'name')
+	server = config.get('main', 'server')
+	channels = config.get('main', 'channels').split(" ")
+	password = config.get('main', 'password')
+	sa_user = config.get('main', 'sa_user')
+	sa_password = config.get('main', 'sa_password')
+	try:
+		timeout = int(config.get('main', 'timeout'))
+	except:
+		print("Could not convert timeout value to integer! Defaulting to 300!")
+		timeout = 300
+	wolframalpha_api_key = config.get('wolframalpha', 'api_key')
+	lastfm_api_key = config.get('lastfm', 'api_key')
+	oauth_token = config.get('twitter', 'oauth_token')
+	oauth_secret = config.get('twitter', 'oauth_secret')
+	consumer_key = config.get('twitter', 'consumer_key')
+	consumer_secret = config.get('twitter', 'consumer_secret')
+	YOUTUBE_API_KEY = config.get('youtube', 'api_key')
+	print("I will use the name: " + name)
+	print("I will connect to the server: " + server)
+	print("I will connect to the channels: " + ", ".join(channels))

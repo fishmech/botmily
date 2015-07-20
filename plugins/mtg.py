@@ -8,11 +8,11 @@ import re
 from urllib import quote_plus
 from urllib2 import urlopen
 
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
 def mtg(message_data, bot):
     result = urlopen('http://magiccards.info/query?v=card&s=cname&q=' + quote_plus(message_data["parsed"]))
-    soup = BeautifulStoneSoup(result, convertEntities=BeautifulStoneSoup.HTML_ENTITIES)
+    soup = BeautifulStoneSoup(result.read()) #BeautifulStoneSoup(result, convertEntities=BeautifulStoneSoup.HTML_ENTITIES)
     card = soup.findAll('table', align='center')[1]
     output = card.find('a').text + ' | '
     output += card.find('p').text.strip().replace('\n', ' ') + ' | '

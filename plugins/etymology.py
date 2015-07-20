@@ -7,14 +7,20 @@ from __future__ import unicode_literals
 import re
 from urllib2 import urlopen
 
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
 def etymology(message_data, bot):
-    result = urlopen('http://www.etymonline.com/index.php?term=' + message_data["parsed"])
-    soup = BeautifulStoneSoup(result, convertEntities=BeautifulStoneSoup.HTML_ENTITIES)
-    if soup.dl is None:
-        return "Not found"
-    return "".join(soup.dl.findAll(text=True)).replace("\n", " ")
+	result = urlopen('http://www.etymonline.com/index.php?term=' + message_data["parsed"])
+	reply = ''
+	soup = BeautifulSoup(result.read()) #BeautifulStoneSoup(result, convertEntities=BeautifulStoneSoup.HTML_ENTITIES)
+	if soup.dl is None:
+		reply = 'Not found'
+	else:
+		reply = "".join(soup.dl.findAll(text=True)).replace("\n", " ")
+	if reply == 'Not found':
+		return reply
+	else:
+		return reply[:300]+'... http://www.etymonline.com/index.php?term=' + message_data["parsed"]
 
 commands = {"etymology": etymology}
 triggers = []
