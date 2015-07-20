@@ -10,7 +10,7 @@ import re
 from urllib import quote_plus
 from urllib2 import urlopen
 
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
 from botmily import irc
 
@@ -21,8 +21,8 @@ def google(message_data, bot):
         return "No results found"
     first_result = json_data['responseData']['results'][0]
     output = first_result['unescapedUrl'] + ' | '
-    output += irc.bold(BeautifulStoneSoup(first_result['titleNoFormatting'], convertEntities=BeautifulStoneSoup.HTML_ENTITIES).text) + ' | '
-    output += BeautifulStoneSoup(first_result['content'], convertEntities=BeautifulStoneSoup.HTML_ENTITIES).text
+    output += irc.bold(BeautifulSoup(first_result['titleNoFormatting'].read()).text) + ' | ' #irc.bold(BeautifulStoneSoup(first_result['titleNoFormatting'], convertEntities=BeautifulStoneSoup.HTML_ENTITIES).text) + ' | '
+    output += BeautifulSoup(first_result['content'].read()).text #BeautifulStoneSoup(first_result['content'], convertEntities=BeautifulStoneSoup.HTML_ENTITIES).text
     return output
 
 def gis(message_data, bot):

@@ -5,24 +5,23 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import re
-import urllib2
+from urllib2 import urlopen
 
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
 from botmily import irc
 
 def steam(message_data, bot):
-    try:
-        result = urllib2.urlopen('http://www.steamcalculator.com/id/' + message_data["parsed"])
-    except urllib2.URLError:
-        return "Nothing found sorry"
-    soup = BeautifulStoneSoup(result, convertEntities=BeautifulStoneSoup.HTML_ENTITIES)
-    data = soup.find('div', id='rightdetail')
-    game_count = re.search('Found ([0-9]+)', data.text).group(1)
-    output = irc.bold(message_data["parsed"]) + ' owns ' + irc.bold(game_count) + ' Games with a value of ' + irc.bold(re.search('\$.*', data.text).group(0)) + '.'
-    if int(game_count) >= 125:
-        output += ' <--- jesus fuck quit buying games you neckbeard.'
-    return output
+	result = urlopen('http://alabasterslim.com/worth.php?account=' + message_data["parsed"])
+	soup = BeautifulSoup(result.read())
+	error = soup.find('div',id='centredetail')
+	if error is not None:
+		output = 'Nothing found'
+	else:
+		data = soup.find_all('fieldset')
+		resultfield = data[1].text.encode('ascii','ignore')
+		output = message_data["parsed"].encode('utf-8') + ' owns' + resultfield[resultfield.find('You own')+7:resultfield.find(' - What does this')].encode('utf-8') + ' - http://alabasterslim.com/worth.php?account=' + message_data["parsed"].encode('utf-8')
+	return output
 
 commands = {"sc": steam, "steamcalc": steam}
 triggers = []

@@ -112,13 +112,16 @@ class irc_handler(asynchat.async_chat):
 		self.push(b"PONG " + message + b"\r\n")
 
 	def raw_PRIVMSG(self, prefix, params):
+		# Increment the number of messages seen here as well because maybe that will be more robust:
+		self.pingcount += 1
+		
 		nick, user, host = split_prefix(prefix)
 		channel = params[0]
 		message = params[-1].decode("utf-8", "replace")
 		self.bot.privmsg(nick, user, host, channel, message)
 
 	def raw_PING(self, prefix, params):
-		print("Ping")
+		#print("Ping")
 		self.pingcount += 1
 		self.pong(params[0])
 
@@ -128,15 +131,16 @@ class irc_handler(asynchat.async_chat):
 		self.bot.join(nick, user, host, channel)
 
 	def ping_check(self):
-		print "Pings:",self.pingcount
+		print self.__str__() + " ~ Seen Pings/Messages:",self.pingcount
+		self.mytimer.cancel()
 		if self.pingcount > 0:
 			self.mytimer = Timer(self.bot.timeout, self.ping_check, ())
 			self.mytimer.start()
 			self.pingcount = 0
 		else:
-			print "Suspected Disconnection? Closing socket."
+			print self.__str__() + " ~ Suspected Disconnection? Closing socket."
 			asynchat.async_chat.handle_close(self)
-			self.bot.drop()
+			self.bot.drop(self)
 			return False
 	
 	def stop(self):

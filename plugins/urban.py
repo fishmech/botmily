@@ -7,14 +7,15 @@ from __future__ import unicode_literals
 import re
 from urllib2 import urlopen
 
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
 def urban(message_data, bot):
   result = urlopen('http://www.urbandictionary.com/define.php?term=' + message_data["parsed"])
-  soup = BeautifulStoneSoup(result, convertEntities=BeautifulStoneSoup.HTML_ENTITIES)
-  definition = soup.find('div', attrs={'class': 'definition'})
+  soup = BeautifulSoup(result.read())
+  wordresult = soup.find('a', class_='word')
+  definition = soup.find('div', class_='meaning')
   if definition:
-    return definition.text
+    return wordresult.text.replace('\n','') + ': ' + definition.text.replace('\n','')
   else:
     return "Nothing found"
 
