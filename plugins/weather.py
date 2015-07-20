@@ -31,16 +31,32 @@ def weather(message_data, bot):
     except ElementTree.ParseError:
         return "Error getting weather data"
     current_observation = weather.find('current_observation')
-    if current_observation is None:
-        return "Error getting weather data"
-    display_location = current_observation.find('display_location')
-    string = display_location.find('full').text + ': '
-    string = string + current_observation.find('weather').text + ', '
-    string = string + current_observation.find('temperature_string').text + ', '
-    string = string + current_observation.find('relative_humidity').text + ', Wind is blowing '
-    string = string + current_observation.find('wind_string').text.replace('F','f', 1) + '.'
+    results = weather.find('results')
+    if current_observation is not None:
+        display_location = current_observation.find('display_location')
+        string = display_location.find('full').text + ': '
+        string += current_observation.find('weather').text + ', '
+        string += current_observation.find('temperature_string').text + ', '
+        string += current_observation.find('relative_humidity').text + ', Wind is blowing '
+        string += current_observation.find('wind_string').text.replace('F','f', 1) + '.'
+    elif results is not None:
+        string = "Found the following cities/locations, please specify:\n"
+        for r in results:
+            string += r.find('name').text + ', ' + r.find('city').text + ', '
+            state = r.find('state')
+            if state.text is not None:
+                string += state.text + ', '
+            string += r.find('country_name').text + "(" + r.find('country').text + ")\n"
+    else:
+        string = "City/location not found"
     return string
 
 commands = {"weather": weather}
 triggers = []
 
+if __name__ == '__main__':
+    import sys
+    if (len(sys.argv) < 2):
+        print("Please provide search-argument")
+        sys.exit(1)
+    print(weather({"parsed" : sys.argv[1]},None))
